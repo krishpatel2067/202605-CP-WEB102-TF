@@ -9,35 +9,27 @@ const App = () => {
   const UPGRADES = [
     {
       name: "Double Stuffed 👯‍♀️",
-      desc: "2x per click",
-      cost: "10 samosas",
-      func: () => {
-        if (count >= 10) {
-          setMultiplier(multiplier * 2);
-        }
-      },
+      mult: 2,
+      cost: 10,
     },
     {
       name: "Party Pack 🎉",
-      desc: "5x per click",
-      cost: "100 samosas",
-      func: () => {
-        if (count >= 100) {
-          setMultiplier(multiplier * 5);
-        }
-      },
+      mult: 5,
+      cost: 100,
     },
     {
       name: "Full Feast 👩🏽‍🍳",
-      desc: "10x per click",
-      cost: "1000 samosas",
-      func: () => {
-        if (count >= 1000) {
-          setMultiplier(multiplier * 10);
-        }
-      },
+      mult: 10,
+      cost: 1000,
     },
   ];
+
+  const applyUpgrade = (cost, mult) => {
+    if (count >= cost) {
+      setMultiplier(multiplier * mult);
+      setCount((prev) => prev - cost);
+    }
+  };
 
   return (
     <div className="App">
@@ -51,8 +43,10 @@ const App = () => {
         {UPGRADES.map((upgrade, i) => (
           <div className="upgrade" key={i}>
             <h3>{upgrade.name}</h3>
-            <p>{upgrade.desc}</p>
-            <button onClick={upgrade.func}>{upgrade.cost}</button>
+            <p>{upgrade.mult}x per click</p>
+            <button onClick={() => applyUpgrade(upgrade.cost, upgrade.mult)}>
+              {upgrade.cost} samosas
+            </button>
           </div>
         ))}
       </div>
