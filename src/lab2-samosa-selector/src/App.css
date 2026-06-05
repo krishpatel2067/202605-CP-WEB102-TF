@@ -3,6 +3,16 @@
   padding: 1.5;
   margin: 0 auto;
   text-align: center;
+  cursor: pointer;
+  transition: transform 100ms linear;
+}
+
+.samosa:hover {
+  transform: scale(1.1) rotate(2deg);
+}
+
+.samosa:active {
+  transform: scale(0.95);
 }
 
 .container {
