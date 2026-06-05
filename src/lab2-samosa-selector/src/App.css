@@ -4,3 +4,38 @@
   margin: 0 auto;
   text-align: center;
 }
+
+.container {
+  margin-top: 50px;
+  margin-inline: auto;
+  display: flex;
+  justify-content: center;
+}
+
+.upgrade {
+  border: 1px solid rgb(153 153 153 / 0.497);
+  padding: 20px 10px;
+  margin-right: 25px;
+  width: 200px;
+  border-radius: 8px;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.3em 1em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background: #e7e7e7;
+  color: rgba(0, 0, 0, 0.87);
+  cursor: pointer;
+  margin-top: 25px;
+}
+
+@media (prefers-color-scheme: dark) {
+  button {
+    background: #393939;
+    color: rgb(255 255 255 / 0.87);
+  }
+}
