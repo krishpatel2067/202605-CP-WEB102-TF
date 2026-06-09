@@ -1,0 +1,6 @@
+{
+    "search.exclude": {
+        "**/lab1-*/**": true,
+        "**/lab2-*/**": true,
+    }
+}
