@@ -2,5 +2,7 @@
     "search.exclude": {
         "**/lab1-*/**": true,
         "**/lab2-*/**": true,
-    }
+    },
+    "editor.tabSize": 2,
+  "editor.detectIndentation": false
 }
