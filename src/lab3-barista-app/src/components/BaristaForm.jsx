@@ -36,7 +36,13 @@ const BaristaForm = () => {
 
   const onCheckAnswer = () => {
     for (const key in ingredients) {
-      const str = trueRecipe[key] != inputs[key] ? "wrong" : "correct";
+      const input = inputs[key].toLowerCase();
+      if (!ingredients[key].includes(input)) {
+        alert(`"${inputs[key]}" is not a valid choice for "${key}"!`);
+        setCorrect((prev) => ({ ...prev, [key]: "wrong" }));
+        break;
+      }
+      const str = trueRecipe[key] != input ? "wrong" : "correct";
       setCorrect((prev) => ({ ...prev, [key]: str }));
     }
   };
@@ -83,6 +89,7 @@ const BaristaForm = () => {
             label="temperature"
             choices={ingredients["temperature"]}
             checked={inputs["temperature"]}
+            currentVal={inputs["temperature"]}
           />
         </div>
 
@@ -99,6 +106,7 @@ const BaristaForm = () => {
             label="milk"
             choices={ingredients["milk"]}
             checked={inputs["milk"]}
+            currentVal={inputs["milk"]}
           />
         </div>
 
@@ -117,6 +125,7 @@ const BaristaForm = () => {
             label="syrup"
             choices={ingredients["syrup"]}
             checked={inputs["syrup"]}
+            currentVal={inputs["syrup"]}
           />
         </div>
 
@@ -135,6 +144,7 @@ const BaristaForm = () => {
             label="blended"
             choices={ingredients["blended"]}
             checked={inputs["blended"]}
+            currentVal={inputs["blended"]}
           />
         </div>
       </form>
