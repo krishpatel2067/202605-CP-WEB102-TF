@@ -1,6 +1,7 @@
 import { useState } from "react";
 import APIForm from "./components/APIForm";
 import "./App.css";
+import Gallery from "./components/Gallery";
 
 const ACCESS_KEY = import.meta.env.VITE_APP_ACCESS_KEY;
 
@@ -14,6 +15,7 @@ function App() {
     width: "",
     height: "",
   });
+  const [prevImages, setPrevImages] = useState([]);
 
   const callAPI = async (query) => {
     const response = await fetch(query);
@@ -23,6 +25,7 @@ function App() {
       alert("Oops! Something went wrong with that query, let's try again!");
     } else {
       setCurrentImage(json.url);
+      setPrevImages((images) => [...images, json.url]);
       reset();
     }
   };
@@ -99,7 +102,7 @@ function App() {
       <br></br>
 
       <div className="container">
-        <h3> Current Query Status: </h3>
+        <h3>Current Query Status:</h3>
         <p>
           https://api.apiflash.com/v1/urltoimage?access_key=ACCESS_KEY
           <br></br>
@@ -117,6 +120,10 @@ function App() {
       </div>
 
       <br></br>
+
+      <div className="container">
+        <Gallery images={prevImages} />
+      </div>
     </div>
   );
 }
