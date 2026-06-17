@@ -1,122 +1,124 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useState } from "react";
+import APIForm from "./components/APIForm";
+import "./App.css";
+
+const ACCESS_KEY = import.meta.env.VITE_APP_ACCESS_KEY;
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [currentImage, setCurrentImage] = useState(null);
+  const [inputs, setInputs] = useState({
+    url: "",
+    format: "",
+    no_ads: "",
+    no_cookie_banners: "",
+    width: "",
+    height: "",
+  });
+
+  const callAPI = async (query) => {
+    const response = await fetch(query);
+    const json = await response.json();
+
+    if (json.url == null) {
+      alert("Oops! Something went wrong with that query, let's try again!");
+    } else {
+      setCurrentImage(json.url);
+      reset();
+    }
+  };
+
+  const makeQuery = () => {
+    const wait_until = "network_idle";
+    const response_type = "json";
+    const fail_on_status = "400%2C404%2C500-511";
+    const url_starter = "https://";
+    const fullURL = url_starter + inputs.url;
+    const query = `https://api.apiflash.com/v1/urltoimage?access_key=${ACCESS_KEY}&url=${fullURL}&format=${inputs.format}&width=${inputs.width}&height=${inputs.height}&no_cookie_banners=${inputs.no_cookie_banners}&no_ads=${inputs.no_ads}&wait_until=${wait_until}&response_type=${response_type}&fail_on_status=${fail_on_status}`;
+
+    callAPI(query).catch(console.error);
+  };
+
+  const reset = () => {
+    setInputs({
+      url: "",
+      format: "",
+      no_ads: "",
+      no_cookie_banners: "",
+      width: "",
+      height: "",
+    });
+  };
+
+  const submitForm = () => {
+    const defaultValues = {
+      format: "jpeg",
+      no_ads: "true",
+      no_cookie_banners: "true",
+      width: "1920",
+      height: "1080",
+    };
+
+    if (inputs.url.trim() == "") {
+      alert("You forgot to submit an url!");
+    } else {
+      const updatedInputs = { ...inputs };
+      for (const [key, value] of Object.entries(inputs)) {
+        if (value.trim() == "") {
+          updatedInputs[key] = defaultValues[key];
+        }
+      }
+      setInputs(updatedInputs);
+      makeQuery();
+    }
+  };
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div className="whole-page">
+      <h1>Build Your Own Screenshot! 📸</h1>
 
-      <div className="ticks"></div>
+      <APIForm
+        inputs={inputs}
+        handleChange={(e) =>
+          setInputs((prevState) => ({
+            ...prevState,
+            [e.target.name]: e.target.value.trim(),
+          }))
+        }
+        onSubmit={submitForm}
+      />
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+      {currentImage ? (
+        <img
+          className="screenshot"
+          src={currentImage}
+          alt="Screenshot returned"
+        />
+      ) : (
+        <div> </div>
+      )}
+      <br></br>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      <div className="container">
+        <h3> Current Query Status: </h3>
+        <p>
+          https://api.apiflash.com/v1/urltoimage?access_key=ACCESS_KEY
+          <br></br>
+          &url={inputs.url} <br></br>
+          &format={inputs.format} <br></br>
+          &width={inputs.width}
+          <br></br>
+          &height={inputs.height}
+          <br></br>
+          &no_cookie_banners={inputs.no_cookie_banners}
+          <br></br>
+          &no_ads={inputs.no_ads}
+          <br></br>
+        </p>
+      </div>
+
+      <br></br>
+    </div>
+  );
 }
 
-export default App
+export default App;
