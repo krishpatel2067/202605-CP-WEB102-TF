@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import APIForm from "./components/APIForm";
 import "./App.css";
 import Gallery from "./components/Gallery";
@@ -16,6 +16,11 @@ function App() {
     height: "",
   });
   const [prevImages, setPrevImages] = useState([]);
+  const [quota, setQuota] = useState(null);
+
+  useEffect(() => {
+    getQuota();
+  }, []);
 
   const callAPI = async (query) => {
     const response = await fetch(query);
@@ -27,7 +32,17 @@ function App() {
       setCurrentImage(json.url);
       setPrevImages((images) => [...images, json.url]);
       reset();
+      getQuota();
     }
+  };
+
+  const getQuota = async () => {
+    const response = await fetch(
+      "https://api.apiflash.com/v1/urltoimage/quota?access_key=" + ACCESS_KEY,
+    );
+    const result = await response.json();
+
+    setQuota(result);
   };
 
   const makeQuery = () => {
@@ -76,55 +91,65 @@ function App() {
   };
 
   return (
-    <div className="whole-page">
-      <h1>Build Your Own Screenshot! 📸</h1>
+    <>
+      <p className="quota">
+        {quota
+          ? `Remaining API calls: ${quota.remaining} out of ${quota.limit}`
+          : "Build a screenshot to see remaining quota"}
+      </p>
+      <div className="whole-page">
+        <h1>Build Your Own Screenshot! 📸</h1>
 
-      <APIForm
-        inputs={inputs}
-        handleChange={(e) =>
-          setInputs((prevState) => ({
-            ...prevState,
-            [e.target.name]: e.target.value.trim(),
-          }))
-        }
-        onSubmit={submitForm}
-      />
-
-      {currentImage ? (
-        <img
-          className="screenshot"
-          src={currentImage}
-          alt="Screenshot returned"
+        <APIForm
+          inputs={inputs}
+          handleChange={(e) =>
+            setInputs((prevState) => ({
+              ...prevState,
+              [e.target.name]: e.target.value.trim(),
+            }))
+          }
+          onSubmit={submitForm}
         />
-      ) : (
-        <div> </div>
-      )}
-      <br></br>
 
-      <div className="container">
-        <h3>Current Query Status:</h3>
-        <p>
-          https://api.apiflash.com/v1/urltoimage?access_key=ACCESS_KEY
-          <br></br>
-          &url={inputs.url} <br></br>
-          &format={inputs.format} <br></br>
-          &width={inputs.width}
-          <br></br>
-          &height={inputs.height}
-          <br></br>
-          &no_cookie_banners={inputs.no_cookie_banners}
-          <br></br>
-          &no_ads={inputs.no_ads}
-          <br></br>
-        </p>
+        {currentImage ? (
+          <>
+            <br></br>
+            <img
+              className="screenshot"
+              src={currentImage}
+              alt="Screenshot returned"
+            />
+          </>
+        ) : (
+          <></>
+        )}
+        <br></br>
+
+        <div className="container">
+          <h3>Current Query Status:</h3>
+          <p>
+            https://api.apiflash.com/v1/urltoimage?access_key=ACCESS_KEY
+            <br></br>
+            &url={inputs.url} <br></br>
+            &format={inputs.format} <br></br>
+            &width={inputs.width}
+            <br></br>
+            &height={inputs.height}
+            <br></br>
+            &no_cookie_banners={inputs.no_cookie_banners}
+            <br></br>
+            &no_ads={inputs.no_ads}
+            <br></br>
+          </p>
+        </div>
+
+        <br></br>
+
+        <div className="container">
+          <Gallery images={prevImages} />
+        </div>
       </div>
-
-      <br></br>
-
-      <div className="container">
-        <Gallery images={prevImages} />
-      </div>
-    </div>
+    </>
   );
 }
 
