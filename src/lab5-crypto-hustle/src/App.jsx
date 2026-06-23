@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import CoinInfo from "../../lab4-cap/src/Components/CoinInfo";
+import CoinInfo from "./Components/CoinInfo";
+import SideNav from "./Components/SideNav";
 
 const API_KEY = import.meta.env.VITE_APP_API_KEY;
 
@@ -42,12 +43,13 @@ function App() {
 
   return (
     <div className="whole-page">
+      <SideNav />
       <h1>My Crypto List</h1>
       <input
         type="text"
         placeholder="Search..."
         onChange={(inputString) => searchItems(inputString.target.value)}
-        class="search-bar"
+        className="search-bar"
       />
       <ul>
         {searchInput.length > 0
