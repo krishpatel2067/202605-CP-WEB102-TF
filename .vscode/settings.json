@@ -3,7 +3,8 @@
       "**/lab1-*/**": true,
       "**/lab2-*/**": true,
       "**/lab3-*/**": true,
-      "**/lab4-*/**": false,
+      "**/lab4-*/**": true,
+      "**/lab5-*/**": false,
     },
     "editor.tabSize": 2,
   "editor.detectIndentation": false
