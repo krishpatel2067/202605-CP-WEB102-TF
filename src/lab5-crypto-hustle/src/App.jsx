@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css";
+import CoinInfo from "../../lab4-cap/src/Components/CoinInfo";
 
 const API_KEY = import.meta.env.VITE_APP_API_KEY;
 
@@ -28,7 +29,14 @@ function App() {
       <h1>My Crypto List</h1>
       <ul>
         {list?.map((coin) => (
-          <li key={coin.id}>{coin.name}</li>
+          <CoinInfo
+            key={coin.id}
+            id={coin.id}
+            image={coin.image}
+            name={coin.name}
+            symbol={coin.symbol}
+            price={coin.current_price}
+          />
         ))}
       </ul>
     </div>
