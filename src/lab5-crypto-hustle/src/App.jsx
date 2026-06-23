@@ -51,7 +51,7 @@ function App() {
         onChange={(inputString) => searchItems(inputString.target.value)}
         className="search-bar"
       />
-      <ul>
+      <ul className="crypto-list">
         {searchInput.length > 0
           ? filteredResults.map((coin) => (
               <CoinInfo
