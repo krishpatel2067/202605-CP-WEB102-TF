@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { BrowserRouter, Route, Routes } from "react-router";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Layout from "./Routes/Layout.jsx";
 import DetailView from "./Routes/DetailView";
 import NotFound from "./Routes/NotFound";

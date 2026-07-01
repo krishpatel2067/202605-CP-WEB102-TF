@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
+import CoinChart from "./CoinChart";
 const API_KEY = import.meta.env.VITE_APP_API_KEY;
 
 function CoinDetail() {
@@ -10,6 +11,11 @@ function CoinDetail() {
     const getCoinDetail = async () => {
       const details = await fetch(
         `https://api.coingecko.com/api/v3/coins/${id}`,
+        {
+          headers: {
+            "x-cg-demo-api-key": API_KEY,
+          },
+        },
       );
       const detailsJson = await details.json();
       console.log(detailsJson);
@@ -91,6 +97,7 @@ function CoinDetail() {
             </tr>
           </tbody>
         </table>
+        <CoinChart id={id} symbol={fullDetails.symbol} />
       </>
     );
   } else {

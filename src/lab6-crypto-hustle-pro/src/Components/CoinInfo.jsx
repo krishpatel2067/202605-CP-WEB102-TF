@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 
 const CoinInfo = ({ id, image, name, symbol, price }) => {
   return (
