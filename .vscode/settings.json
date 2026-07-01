@@ -8,5 +8,6 @@
       "**/lab6-*/**": false,
     },
     "editor.tabSize": 2,
+    "editor.formatOnSave": true,
   "editor.detectIndentation": false
 }
