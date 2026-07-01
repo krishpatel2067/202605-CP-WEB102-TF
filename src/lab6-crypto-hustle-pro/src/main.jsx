@@ -1,7 +1,8 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import Layout from "./Routes/Layout.jsx";
 import { BrowserRouter, Route, Routes } from "react-router";
+import Layout from "./Routes/Layout.jsx";
+import DetailView from "./Routes/DetailView";
 import "./index.css";
 import App from "./App.jsx";
 
@@ -11,6 +12,7 @@ createRoot(document.getElementById("root")).render(
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<App />} />
+          <Route path="/coinDetails/:id" element={<DetailView />} />
         </Route>
       </Routes>
     </BrowserRouter>
